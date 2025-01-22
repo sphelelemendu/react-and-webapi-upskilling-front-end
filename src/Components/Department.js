@@ -13,8 +13,10 @@ export class Department extends Component {
     }
 
     refreshList() {
-        this.setState({
-            deps: [{ "DepartmentID": 1, "DepartmentName": "Support" }, { "DepartmentID": 2, "DepartmentName": "IT" }]
+        fetch('https://localhost:44303/api/department')
+        .then(response=>response.json())
+        .then(data=>{
+            this.setState({deps:data})
         })
     }
 
@@ -23,8 +25,10 @@ export class Department extends Component {
         return (
             <Table className="mt-4" striped bordered hover size="sm">
                 <thead>
+                    <tr>
                     <th>Department ID</th>
                     <th>Department Name</th>
+                    </tr>
                 </thead>
                 <tbody>
                     {deps.map(dep =>
