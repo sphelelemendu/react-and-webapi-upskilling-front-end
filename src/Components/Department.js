@@ -20,6 +20,9 @@ export class Department extends Component {
                 this.setState({ deps: data })
             });
     }
+    componentDidUpdate(){
+        this.refreshList();
+    }
 
     render() {
         let AddModalClose = () => this.setState({ AddModalShow: false });
