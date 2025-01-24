@@ -1,11 +1,19 @@
 import React, { Component } from "react";
 import { Modal, Button, Row, Col, Form, FormGroup } from "react-bootstrap";
+import { IconButton, Snackbar } from "@mui/material";
+import { getIconButtonUtilityClass } from "@mui/material";
 
 export class AddDepModal extends Component {
 
     constructor(props) {
         super(props);
+        this.state = { snackbaropen: false, snackbarmsg: '' };
+        this.handleSubmit = this.handleSubmit.bind(this);
 
+    }
+
+    snackbarClose = (event) => {
+        this.setState({ snackbaropen: false })
     }
 
     handleSubmit(event) {
@@ -22,32 +30,43 @@ export class AddDepModal extends Component {
             })
         }
 
-        ).then(res=> res.json())
-        .then((result)=>{
-            alert(result)
-        },
-        (error)=>{
-            alert("Failed")
-        })
+        ).then(res => res.json())
+            .then((result) => {
+                this.setState({snackbaropen:true, snackbarmsg: result})
+            },
+                (error) => {
+                    this.setState({snackbaropen:true, snackbarmsg: "Failed"})
+                })
     }
 
     render() {
 
         return (
-            <Modal
-                show={this.props.show} onHide={this.props.onHide}
-                size="lg"
-                aria-labelledby="contained-modal-title-vcenter"
-                centered
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title id="contained-modal-title-vcenter">
-                        Add Department
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <h4>Centered Modal</h4>
-                    <div className="container">
+            <div className="container">
+
+                <Snackbar anchorOrigin={{vertical:"top",horizontal:"left"}} 
+                autoHideDuration={250}
+                onClose={this.state.snackbarClose}
+                message={<span id= "messageId">{this.state.snackbarmsg}</span>}
+                open={this.state.snackbaropen}
+                action ={[
+                    <IconButton key="close" aria-label="Close" color="inherent" onClick={this.snackbarClose} >
+                        x
+                    </IconButton>
+                ]}
+                />
+                <Modal
+                    show={this.props.show} onHide={this.props.onHide}
+                    size="lg"
+                    aria-labelledby="contained-modal-title-vcenter"
+                    centered
+                >
+                    <Modal.Header closeButton>
+                        <Modal.Title id="contained-modal-title-vcenter">
+                            Add Department
+                        </Modal.Title>
+                    </Modal.Header>
+                    <Modal.Body> 
                         <Row>
                             <Col sm={6}>
                                 <Form onSubmit={this.handleSubmit} >
@@ -64,15 +83,12 @@ export class AddDepModal extends Component {
                             </Col>
 
                         </Row>
-
-
-                    </div>
-
-                </Modal.Body>
-                <Modal.Footer>
-                    <Button onClick={this.props.onHide} variant="danger">Close</Button>
-                </Modal.Footer>
-            </Modal>
+                    </Modal.Body>
+                    <Modal.Footer>
+                        <Button onClick={this.props.onHide} variant="danger">Close</Button>
+                    </Modal.Footer>
+                </Modal>
+            </div>
         );
     }
 }
