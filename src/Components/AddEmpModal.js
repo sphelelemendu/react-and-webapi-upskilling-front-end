@@ -7,7 +7,7 @@ export class AddEmpModal extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { deps:[], snackbaropen: false, snackbarmsg: '' };
+        this.state = { deps: [], snackbaropen: false, snackbarmsg: '' };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -15,18 +15,20 @@ export class AddEmpModal extends Component {
         this.setState({ snackbaropen: false })
     }
 
-    componentDidMount(){
+    componentDidMount() {
 
         fetch("https://localhost:44303/api/department")
-        .then(response => response.json())
-        .then(data => {
-            this.setState({ deps: data })
-        });
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ deps: data })
+            });
         console.log(this.deps)
     }
 
     handleSubmit(event) {
         event.preventDefault();
+        const { EmployeeName, DepartmentName, MailID, DOJ } = event.target.elements;
+        console.log("EmployeeName:", EmployeeName.value); console.log("Department:", DepartmentName.value); console.log("MailID:", MailID.value); console.log("DOJ:", DOJ.value);
         fetch("https://localhost:44303/api/employee", {
             method: 'POST',
             headers: {
@@ -35,10 +37,10 @@ export class AddEmpModal extends Component {
             },
             body: JSON.stringify({
                 EmployeeID: null,
-                EmployeeName: event.target.DepartmentName.value,
-                Department: event.target.DepartmentName.value,
-                MailID: event.target.DepartmentName.value,
-                doj: event.target.DepartmentName.value,
+                EmployeeName: EmployeeName.value,
+                DepartmentName: DepartmentName.value,
+                MailID: MailID.value,
+                DOJ: DOJ.value,
 
             })
         }
@@ -53,7 +55,7 @@ export class AddEmpModal extends Component {
     }
 
     render() {
-        
+
 
         return (
             <div className="container">
@@ -90,12 +92,12 @@ export class AddEmpModal extends Component {
                                     </Form.Group>
                                     <Form.Group controlId="Department">
                                         <Form.Label>Department</Form.Label>
-                                        <Form.Control as = "select">
-                                            {this.state.deps.map(dep=>
-                                        
+                                        <Form.Control as="select" name="DepartmentName" defaultValue="Default" >
+                                            {this.state.deps.map(dep =>
 
-                                                <option key={dep.DepartmentID}>{dep.DepartmentName}</option>
-            
+
+                                                <option key={dep.DepartmentID} value={dep.EmployeeName}>{dep.DepartmentName}</option>
+
                                             )}
                                         </Form.Control>
                                     </Form.Group>
@@ -105,7 +107,7 @@ export class AddEmpModal extends Component {
                                     </Form.Group>
                                     <Form.Group controlId="DOJ">
                                         <Form.Label>Date Of Join</Form.Label>
-                                        <Form.Control required name="DOJ" type="text" placeholder="Date Of Join" />
+                                        <Form.Control required name="DOJ" type="date" placeholder="Date Of Join" />
                                     </Form.Group>
                                     <Form.Group className="mt-3">
                                         <Button variant="primary" type="submit">Add Employee</Button>
