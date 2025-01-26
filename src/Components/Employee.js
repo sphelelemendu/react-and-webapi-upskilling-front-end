@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { ButtonToolbar, Table } from "react-bootstrap";
 import { Button, ButtonToolBar } from "react-bootstrap";
-import { AddDepModal } from "./AddDepModal";
+import { AddEmpModal } from "./AddEmpModal";
 import { EditDepModal } from "./EditDepModal";
 
 export class Employee extends Component {
@@ -56,6 +56,7 @@ export class Employee extends Component {
                     <tbody>
                         {emps.map(emp =>
                             <tr key={emp.EmployeeID}>
+                                <td>{emp.EmployeeID}</td>
                                 <td>{emp.EmployeeName}</td>
                                 <td>{emp.Department}</td>
                                 <td>{emp.MailID}</td>
@@ -86,7 +87,7 @@ export class Employee extends Component {
                     <Button variant="primary" onClick={() => this.setState({ AddModalShow: true })
                     }>Add Employee</Button>
                 </ButtonToolbar>
-                <AddDepModal show={this.state.AddModalShow} onHide={AddModalClose} />
+                <AddEmpModal show={this.state.AddModalShow} onHide={AddModalClose} />
             </div>
         );
     }
