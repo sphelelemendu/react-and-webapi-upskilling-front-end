@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { ButtonToolbar, Table } from "react-bootstrap";
 import { Button, ButtonToolBar } from "react-bootstrap";
 import { AddEmpModal } from "./AddEmpModal";
-import { EditDepModal } from "./EditDepModal";
+import { EditEmpModal } from "./EditEmpModal";
 
 export class Employee extends Component {
     constructor(props) {
@@ -39,7 +39,7 @@ export class Employee extends Component {
 
         let AddModalClose = () => this.setState({ AddModalShow: false });
         let EditModalClose = () => this.setState({ EditModalShow: false });
-        const { emps, empid, empname } = this.state;
+        const { emps, empid, empname,empdepartmentname,empmailid,empdoj } = this.state;
         return (
             <div className="container mt-4">
                 <Table className="mt-4" striped bordered hover size="sm">
@@ -62,16 +62,19 @@ export class Employee extends Component {
                                 <td>{emp.MailID}</td>
                                 <td>{emp.DOJ}</td>
                                 <td><ButtonToolbar>
-                                    <Button className="mr-5" variant="info" onClick={() => this.setState({ EditModalShow: true, empid: emp.EmployeeID, empname: emp.EmployeeName })}>
+                                    <Button className="mr-5" variant="info" onClick={() => this.setState({ EditModalShow: true, empid: emp.EmployeeID, empname: emp.EmployeeName,empdepartmentname: emp.Department, empmailid: emp.MailID, empdoj:emp.DOJ })}>
                                         Edit
                                     </Button>
                                     <Button className="ml-2" variant="danger" onClick={() => this.deleteEmp(emp.EmployeeID)}>
                                         Delete
                                     </Button>
-                                    <EditDepModal
+                                    <EditEmpModal
                                         show={this.state.EditModalShow}
                                         onHide={EditModalClose}
                                         empid={empid}
+                                        empdepartmentname={empdepartmentname}
+                                        empmailid={empmailid}
+                                        empdoj={empdoj}
                                         empname={empname} />
 
 
