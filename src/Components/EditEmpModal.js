@@ -7,7 +7,7 @@ export class EditEmpModal extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { snackbaropen: false, snackbarmsg: '' };
+        this.state = { deps: [], snackbaropen: false, snackbarmsg: '' };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -39,6 +39,14 @@ export class EditEmpModal extends Component {
                 (error) => {
                     this.setState({ snackbaropen: true, snackbarmsg: "Failed" })
                 })
+    }
+    componentDidMount() {
+        fetch("https://localhost:44303/api/department")
+            .then(response => response.json())
+            .then(data => {
+                this.setState({ deps: data })
+            });
+        console.log(this.deps)
     }
     render() {
 
@@ -78,15 +86,19 @@ export class EditEmpModal extends Component {
                                     </Form.Group>
                                     <Form.Group controlId="EmployeeName">
                                         <Form.Label>Employee Name</Form.Label>
-                                        <Form.Control required  defaultValue={this.props.empname} name="EmployeeName" type="text" placeholder="Employee Name" />
+                                        <Form.Control required defaultValue={this.props.empname} name="EmployeeName" type="text" placeholder="Employee Name" />
                                     </Form.Group>
                                     <Form.Group controlId="DepartmentName">
                                         <Form.Label>Department Name</Form.Label>
-                                        <Form.Control required  defaultValue={this.props.empdepartmentname} name="DepartmentName" type="text" placeholder="Department Name" />
+                                        <Form.Control defaultValue="Dafault" name="DepartmentName" as="select" placeholder="Department Name">
+                                            {this.state.deps.map(dep =>
+                                                <option key={dep.DepartmentID} value={dep.DepartmentName}>{dep.DepartmentName}</option>
+                                            )}
+                                        </Form.Control>
                                     </Form.Group>
                                     <Form.Group controlId="DOJ">
                                         <Form.Label>DOJ</Form.Label>
-                                        <Form.Control required  defaultValue={this.props.empdoj} name="DOJ" type="text" placeholder="Date of join" />
+                                        <Form.Control required defaultValue={this.props.empdoj} name="DOJ" type="date" placeholder="Date of join" />
                                     </Form.Group>
 
 
